@@ -189,12 +189,7 @@ def main():
     assert p.exists(), "File not found: {}".format(args.input)
     filename = p.name
     problem_id = extract_id(p)
-    logging.info("Problem ID: {}".format(problem_id))
-    print(
-        "\nTesting code against samples in AtCoder {}: {}".format(
-            bold(problem_id), bold(filename)
-        )
-    )
+    print("\nAtCoder {}: {}".format(bold(problem_id), bold(filename)))
 
     json_str = extract_samples(problem_id)
     json_dict = json.loads(json_str)
