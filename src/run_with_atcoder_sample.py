@@ -9,7 +9,6 @@ Codeforces Automatic Testing with Sample Input/Output
       2015-12-06  Moved to GitHub repository
       2018-11-27  Applied black. Adapt to new input/output
 """
-from scrape_atcoder import extract_samples, is_valid
 import argparse
 import subprocess
 import sys
@@ -18,6 +17,13 @@ import pathlib
 import json
 import logging
 import re
+import inspect
+
+pp = os.path.abspath(os.path.dirname(inspect.getsourcefile(lambda:0)))
+print("pp = {}".format(pp))
+sys.path.append(pp)
+
+from scrape_atcoder import extract_samples, is_valid
 
 
 class colors:
@@ -98,6 +104,7 @@ def run_code(filepath, inp):
         filepath (pathlib.Path): filename of python code
         inp (list of str): sample input
     """
+    filepath = filepath.absolute()
     p_src = filepath.as_posix()
     base, ext = filepath.stem, filepath.suffix
     exe_ext = ".exe"
@@ -155,7 +162,7 @@ def compare(inputs, outputs, groundtruth):
         if ans == out:
             print(green("ok"))
         else:
-            print(red("==================Incorrect!=================="))
+            print(red("============ Incorrect or Mismatching! ============"))
             print("Input : ", inp)
             print("Output: ", out)
             print("Answer: ", ans)
