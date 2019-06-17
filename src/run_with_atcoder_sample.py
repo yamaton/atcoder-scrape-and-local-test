@@ -19,8 +19,7 @@ import logging
 import re
 import inspect
 
-pp = os.path.abspath(os.path.dirname(inspect.getsourcefile(lambda:0)))
-print("pp = {}".format(pp))
+pp = os.path.abspath(os.path.dirname(inspect.getsourcefile(lambda: 0)))
 sys.path.append(pp)
 
 from scrape_atcoder import extract_samples, is_valid
@@ -46,6 +45,10 @@ def green(s):
 
 def red(s):
     return colors.FAIL + s + colors.ENDC
+
+
+def orange(s):
+    return colors.WARNING + s + colors.ENDC
 
 
 def extract_id(filepath):
@@ -162,10 +165,10 @@ def compare(inputs, outputs, groundtruth):
         if ans == out:
             print(green("ok"))
         else:
-            print(red("============ Incorrect or Mismatching! ============"))
-            print("Input : ", inp)
-            print("Output: ", out)
-            print("Answer: ", ans)
+            print(red("============ Mismatch ============"))
+            print("Sample Input : ", inp)
+            print("Sample Output: ", out)
+            print("Your Answer  : ", orange(ans))
 
 
 def main():
@@ -176,7 +179,7 @@ def main():
     4. Run Python code with the sample input, and compare its outcome with the
     sample output.
     """
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.WARN)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="input source code path")
