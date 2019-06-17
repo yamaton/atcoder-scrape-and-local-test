@@ -56,17 +56,13 @@ string in the filename as long as they are separated by space , or hyphen
 
 The script `run_with_atcoder_sample.py` feeds the samples cases to your code as standard input, and returns “ok” if the standard output agrees with the samples.
 
-
-
-[TODO: SAMPLE SCREENSHOT — SUCCESS]
+![](./screenshots/ok.png)
 
 
 
 Otherwise, it returns “Incorrect”, and shows sample input, your output, and sample output. This happens as long as output strings do not agree **exactly**.
 
-
-
-[TODO: SAMPLE SCREENSHOT — FAILURE]
+![](./screenshots/mismatch.png)
 
 
 
