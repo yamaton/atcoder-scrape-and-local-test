@@ -8,6 +8,34 @@ Run your answer to AtCoder problems with sample cases **without copy-pasting**! 
 -   [Beautiful Soup 4](<http://www.crummy.com/software/BeautifulSoup/>)
 
 
+
+## Setup
+
+```bash
+# [Optional] Activate conda environment
+$ conda activate env
+
+# Install beautifulsoup4
+(env) $ conda install beautifulsoup4
+
+# Copy symbolic link to local dir
+(env) $ cp atcoder ~/bin
+
+# Set path to ~/bin
+(env) $ echo "export PATH=$HOME/bin:$PATH" >> ~/.bash_profile  # for bash
+(env) $ source ~/.bash_profile
+
+(env) $ echo "export PATH=$HOME/bin:$PATH" >> ~/.zshenv        # for zsh
+(env) $ source ~/.zshenv
+```
+
+
+
+
+
+
+
+
 ## Usage
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
