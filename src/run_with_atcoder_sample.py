@@ -179,7 +179,7 @@ def main():
     4. Run Python code with the sample input, and compare its outcome with the
     sample output.
     """
-    logging.basicConfig(level=logging.WARN)
+    logging.basicConfig(level=logging.DEBUG)
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="input source code path")
