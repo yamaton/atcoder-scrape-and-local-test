@@ -183,15 +183,20 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="input source code path")
+    parser.add_argument("--contest", help="Weather it's AtCoder contest", default="yes")
     args = parser.parse_args()
 
     p = pathlib.Path(args.input)
+    first_char = args.contest.lower()[0]
+    if_login = (first_char == "y" or first_char == "t")
+    logging.debug("if_login: {}".format(if_login))
+
     assert p.exists(), "File not found: {}".format(args.input)
     filename = p.name
     problem_id = extract_id(p)
     print("\nAtCoder {}: {}".format(bold(problem_id), bold(filename)))
 
-    json_str = extract_samples(problem_id)
+    json_str = extract_samples(problem_id, if_login)
     json_dict = json.loads(json_str)
 
     assert problem_id == json_dict["id"]

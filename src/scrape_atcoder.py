@@ -112,10 +112,13 @@ def save_samples(jsonstr):
 def _fetch_urlcontent(url, login=True):
     """Login and get URL content
     """
+    if not login:
+        return _fetch_urlcontent_wo_login(url)
+
     username = keyring.get_password(ATCODER_SERVICE, ATCODER_SERVICE)
     password = keyring.get_password(ATCODER_SERVICE, username)
 
-    if (not login) or (not password):
+    if not password:
         logging.warn("Login info is unavailable. Run `python src/set_login_info.py`.")
         logging.info("Fetching samples without logging in")
         return _fetch_urlcontent_wo_login(url)
@@ -127,7 +130,7 @@ def _fetch_urlcontent(url, login=True):
         soup = bs4.BeautifulSoup(raw.text, features="html.parser")
         csrf_token = soup.find("input", attrs={"name": "csrf_token"}).get("value")
         payload["csrf_token"] = csrf_token
-        p = s.post(ATCODER_LOGIN_URL, data=payload)
+        s.post(ATCODER_LOGIN_URL, data=payload)
         r = s.get(url)
     return r.text
 
@@ -138,7 +141,7 @@ def _fetch_urlcontent_wo_login(url):
     return res
 
 
-def extract_samples(problem_str):
+def extract_samples(problem_str, if_login=False):
     """
     Go to CodeForces website and return input/output samples in JSON string
 
@@ -159,7 +162,7 @@ def extract_samples(problem_str):
     check_sanity(problem_str)
     uri = geturi(problem_str, ATCODER_PROBLEM_URL)
 
-    rawhtml = _fetch_urlcontent(uri)
+    rawhtml = _fetch_urlcontent(uri, if_login)
     soup = bs4.BeautifulSoup(rawhtml, features="html.parser")
     input_sample_anckers = [x for x in soup.find_all("h3") if "Sample Input" in x.text]
     inputs = [x.next.next.text.splitlines() for x in input_sample_anckers]
