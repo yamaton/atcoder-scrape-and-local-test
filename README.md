@@ -25,17 +25,18 @@ git clone https://github.com/yamaton/atcoder-scrape-and-local-test.git
 # Create a symbolic link to ~/bin
 ln -s  $(readlink -f ./atcoder-scrape-and-local-test/src/run_with_atcoder_sample.py) ~/bin/atcoder
 
-# Set path to ~/bin (bash/zsh/fish)
-SHELLNAME=$(basename $(echo $0))
-if [ SHELLNAME == bash ]; then
-    echo "export PATH=$HOME/bin:$PATH" >> ~/.bash_profile
-    source ~/.bash_profile
-elif [ SHELLNAME == zsh ]; then
-    echo "export PATH=$HOME/bin:$PATH" >> ~/.zshenv        # for zsh
-    source ~/.zshenv
-elif [ SHELLNAME == fish ]; then
-    echo "set -gx PATH \$PATH $HOME/bin" >> ~/.config/fish/config.fish
-done
+# Set path to ~/bin (choose one from following)
+
+# bash (skip otherwise)
+echo "export PATH=$HOME/bin:$PATH" >> ~/.bash_profile
+source ~/.bash_profile
+
+# zsh (skip otherwise)
+echo "export PATH=$HOME/bin:$PATH" >> ~/.zshenv        # for zsh
+source ~/.zshenv
+
+# fish (skip otherwise)
+echo "set -gx PATH \$PATH $HOME/bin" >> ~/.config/fish/config.fish
 
 # Securely save username and password locally
 python ./atcoder-scrape-and-local-test/src/set_login_info.py
