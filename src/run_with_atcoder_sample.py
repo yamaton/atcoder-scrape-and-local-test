@@ -39,6 +39,10 @@ def bold(s):
     return colors.BOLD + s + colors.ENDC
 
 
+def blue(s):
+    return colors.OKBLUE + s + colors.ENDC
+
+
 def green(s):
     return colors.OKGREEN + s + colors.ENDC
 
@@ -159,7 +163,7 @@ def compare(inputs, outputs, groundtruth):
     assert len(inputs) == len(outputs) == len(groundtruth), "Mismatching size!"
 
     for i, (inp, user_out, samp_out) in enumerate(zip(inputs, outputs, groundtruth)):
-        print("Case {}: ".format(i + 1), end="")
+        print(blue("Case {}".format(i + 1)) + ": ", end="")
         samp_out = samp_out.strip()
         user_out = user_out.strip()
         if samp_out == user_out:
