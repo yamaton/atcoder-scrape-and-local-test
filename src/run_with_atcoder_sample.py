@@ -158,17 +158,17 @@ def compare(inputs, outputs, groundtruth):
     """
     assert len(inputs) == len(outputs) == len(groundtruth), "Mismatching size!"
 
-    for i, (inp, out, ans) in enumerate(zip(inputs, outputs, groundtruth)):
+    for i, (inp, user_out, samp_out) in enumerate(zip(inputs, outputs, groundtruth)):
         print("Case {}: ".format(i + 1), end="")
-        out = out.strip()
-        ans = ans.strip()
-        if ans == out:
+        samp_out = samp_out.strip()
+        user_out = user_out.strip()
+        if samp_out == user_out:
             print(green("ok"))
         else:
             print(red("============ Mismatch ============"))
             print("Sample Input : ", inp)
-            print("Sample Output: ", out)
-            print("Your Answer  : ", orange(ans))
+            print("Sample Output: ", samp_out)
+            print("Your Answer  : ", orange(user_out))
 
 
 def main():
@@ -188,7 +188,7 @@ def main():
 
     p = pathlib.Path(args.input)
     first_char = args.contest.lower()[0]
-    if_login = (first_char == "y" or first_char == "t")
+    if_login = first_char == "y" or first_char == "t"
     logging.debug("if_login: {}".format(if_login))
 
     assert p.exists(), "File not found: {}".format(args.input)
