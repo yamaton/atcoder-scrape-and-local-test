@@ -101,12 +101,13 @@ def extract_id(filepath):
     if not is_valid(candidate):
         # if filename alone cannot resolve the ID
         # use parent directory's name as well
+        candidate = None
         prefix = groups[0]
         if len(prefix) == 1 and prefix.isalpha():
             parent_dir = p.parent.name.lower()
-            candidate = parent_dir + "_" + prefix
-        else:
-            candidate = None
+            tmp = parent_dir + "_" + prefix
+            if is_valid(tmp):
+                candidate = tmp
     
     return candidate
 
@@ -207,6 +208,7 @@ def main():
     assert p.exists(), "File not found: {}".format(args.input)
     filename = p.name
     problem_id = extract_id(p)
+    assert problem_id, "Failed to deduce problem ID"
     print("\nAtCoder {}: {}".format(bold(problem_id), bold(filename)))
 
     json_str = extract_samples(problem_id, if_login)
