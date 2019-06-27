@@ -145,6 +145,10 @@ def run_code(filepath, inp):
     elif ext == ".hs":
         subprocess.run(["ghc", "-O2", "-Wall", p_src, "-o", p_exe])
         com = [p_exe]
+    # Go
+    elif ext == ".go":
+        subprocess.run(["go", "build", "-o", p_exe, p_src])
+        com = [p_exe]
     # Kotlin
     elif ext == ".kt":
         p_jar = filepath.parent / (base + ".jar")
