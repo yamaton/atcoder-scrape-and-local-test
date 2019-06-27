@@ -70,36 +70,44 @@ def extract_id(filepath):
     >>> extract_id('abc130_a.py')
     'abc130_a'
 
+    >>> extract_id('ABC130a.cc')
+
+    >>> extract_id('abc130-a-comment.cc')
+    'abc130_a'
+    
     >>> extract_id('abc130_a Rounding.py')
     'abc130_a'
 
     >>> extract_id('abc130_a_Rounding.py')
     'abc130_a'
 
-    >>> extract_id('abc130/a_Rounding.py')
+    >>> extract_id('ABC130/A-Rounding.py')
     'abc130_a'
 
-    >>> extract_id('abc130/123_baz.py')
-    None
+    >>> extract_id('abc130/aRounding.py')
 
-    If filename contains directories like '/foo/bar/32A-abc.py',
-    basename ('32A-abc.py') is taken first.
+    >>> extract_id('abc130/123_baz.py')
+
+    >>> extract_id('arc012/abc099_a.py')
+    'abc099_a'
     """
     p = pathlib.Path(filepath).absolute()
-    parent_dir = p.parent.name
-    filename_stem = p.stem
+    filename_stem = p.stem.lower()
     logging.debug("filename_stem = {}".format(filename_stem))
 
-    candidate = "_".join(re.split("[-_ ]", filename_stem)[:2])
-    # logging.debug("candidate = {}".format(candidate))
+    groups = re.split(r"[ _-]", filename_stem)
+    candidate = "_".join(groups[:2])
 
     if not is_valid(candidate):
-        suffix = re.split("[-_ ]", filename_stem)[0]
-        if suffix.isalpha() and len(suffix) == 1:
-            candidate = "_".join([parent_dir, suffix])
+        # if filename alone cannot resolve the ID
+        # use parent directory's name as well
+        prefix = groups[0]
+        if len(prefix) == 1 and prefix.isalpha():
+            parent_dir = p.parent.name.lower()
+            candidate = parent_dir + "_" + prefix
         else:
             candidate = None
-
+    
     return candidate
 
 
