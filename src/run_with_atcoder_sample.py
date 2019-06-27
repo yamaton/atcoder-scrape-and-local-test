@@ -123,7 +123,7 @@ def run_code(filepath, inp):
     p_src = filepath.as_posix()
     base, ext = filepath.stem, filepath.suffix
     exe_ext = ".exe"
-    p_exe = filepath.parent / (base + exe_ext)
+    p_exe = (filepath.parent / (base + exe_ext)).as_posix()
 
     # C++
     if ext in (".cc", ".cp", ".cpp", ".c++", ".cxx"):
@@ -146,9 +146,10 @@ def run_code(filepath, inp):
         com = [p_exe]
     # Kotlin
     elif ext == ".kt":
-        jar_path = filepath.parent / (base + ".jar")
-        subprocess.run("kotlinc", p_src, "-include-runtime", "-d", jar_path)
-        com = ["kotlin", "-classpath", jar_path, "-J-Xss256M", "MainKt"]
+        p_jar = filepath.parent / (base + ".jar")
+        classname = filepath.stem.capitalize() + "Kt"
+        subprocess.run(["kotlinc", p_src, "-include-runtime", "-d", p_jar])
+        com = ["kotlin", "-classpath", p_jar, "-J-Xss256M", classname]
     # Nim
     elif ext == ".nim":
         subprocess.run(["nim", "c", "-d:release", "-o:" + p_exe, p_src])
