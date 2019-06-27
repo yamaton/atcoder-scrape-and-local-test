@@ -30,13 +30,13 @@ def is_valid(prob_id):
     Return:
         bool.
 
-    >>> is_proper('abc130_f')
+    >>> is_valid('abc130_f')
     True
 
-    >>> is_proper('dp_k')
+    >>> is_valid('dp_k')
     True
 
-    >>> is_proper('abcde')
+    >>> is_valid('abcde')
     False
     """
     if "_" not in prob_id:

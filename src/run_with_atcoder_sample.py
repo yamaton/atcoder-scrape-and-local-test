@@ -90,6 +90,7 @@ def extract_id(filepath):
 
     >>> extract_id('arc012/abc099_a.py')
     'abc099_a'
+
     """
     p = pathlib.Path(filepath).absolute()
     filename_stem = p.stem.lower()
