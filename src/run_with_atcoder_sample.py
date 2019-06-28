@@ -152,6 +152,11 @@ def prepare_executable(filepath):
     elif ext == ".go":
         subprocess.run(["go", "build", "-o", p_exe, p_src])
         com = [p_exe]
+    # D (DMD)
+    elif ext == ".d":
+        subprocess.run(["dmd", "-m64", "-w", "-O", "-release", "-inline", p_src])
+        p_exe, _ = os.path.splitext(p_exe)
+        com = [p_exe]
     # Kotlin
     elif ext == ".kt":
         p_jar = filepath.parent / (base + ".jar")
