@@ -213,12 +213,15 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="input source code path")
-    parser.add_argument("--contest", help="Weather it's AtCoder contest", default="yes")
+    parser.add_argument(
+        "--nologin",
+        help="No login to AtCoder (works for problems after a contest)",
+        action="store_true",
+    )
     args = parser.parse_args()
 
     p = pathlib.Path(args.input)
-    first_char = args.contest.lower()[0]
-    if_login = first_char == "y" or first_char == "t"
+    if_login = not args.nologin
     logging.debug("if_login: {}".format(if_login))
 
     assert p.exists(), "File not found: {}".format(args.input)
