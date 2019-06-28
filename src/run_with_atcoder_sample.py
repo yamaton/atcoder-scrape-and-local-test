@@ -140,7 +140,7 @@ def run_code(filepath, inp):
         com = [p_exe]
     # F#
     elif ext in (".fs", ".fsx"):
-        subprocess.run(["fsharpc", p_src])
+        subprocess.run(["fsharpc", "--nologo", "-o", p_exe, p_src])
         com = ["mono", p_exe]
     # Haskell
     elif ext == ".hs":
