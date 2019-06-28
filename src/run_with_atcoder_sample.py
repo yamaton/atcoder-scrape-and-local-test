@@ -109,17 +109,19 @@ def extract_id(filepath):
             tmp = parent_dir + "_" + prefix
             if is_valid(tmp):
                 candidate = tmp
-    
+
     return candidate
 
 
-def run_code(filepath, inp):
+def prepare_executable(filepath):
     """
-    Run C++/Python/Haskell code against given inp
+    Prepare executable of C++/Python/Haskell code
 
     Args:
         filepath (pathlib.Path): filename of python code
-        inp (list of str): sample input
+
+    Returns:
+        com (list of str): Executable command to be consumed in subprocess
     """
     filepath = filepath.absolute()
     p_src = filepath.as_posix()
@@ -163,8 +165,12 @@ def run_code(filepath, inp):
     else:
         sys.exit("I can take only .py, .cc, .fs, .hs, .kt")
 
-    p_src = subprocess.Popen(com, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    out, _ = p_src.communicate(inp.encode())  # encode: string -> bytestring
+    return com
+
+
+def run_code(cmd, inp):
+    p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, _ = p.communicate(inp.encode())  # encode: string -> bytestring
     out = out.decode().strip()  # decode: bytestring -> string
     return out
 
@@ -222,12 +228,20 @@ def main():
     assert problem_id == json_dict["id"]
     sample_io_pairs = json_dict["sample_io_pairs"]
 
-    inputs = ["\n".join(input_line_list) for (input_line_list, _) in sample_io_pairs]
-    groupndtruths = [
+    sample_inputs = [
+        "\n".join(input_line_list) for (input_line_list, _) in sample_io_pairs
+    ]
+    sample_outputs = [
         "\n".join(output_line_list) for (_, output_line_list) in sample_io_pairs
     ]
-    outputs = [run_code(p, inp) for inp in inputs]
-    compare(inputs, outputs, groupndtruths)
+    logging.debug("sample inputs  : {}".format(sample_inputs))
+    logging.debug("sample outputs : {}".format(sample_outputs))
+
+    cmd = prepare_executable(p)
+    prog_outputs = [run_code(cmd, inp) for inp in sample_inputs]
+
+    logging.debug("program outputs: {}".format(prog_outputs))
+    compare(sample_inputs, prog_outputs, sample_outputs)
 
 
 if __name__ == "__main__":
