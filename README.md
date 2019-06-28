@@ -59,6 +59,7 @@ string in the filename as long as they are separated by space , or hyphen
 - `abc130/a.cpp`
 - `abc130/a-Rounding.cpp`
 
+But filename such like `abc130a.cpp` **does not work**.
 
 The script `run_with_atcoder_sample.py` feeds the samples cases to your code as standard input, and returns “ok” if the standard output agrees with the samples.
 
@@ -82,11 +83,13 @@ The script identifies language by file extension. Here is what's supported curre
 - Haskell (.hs)
 - Kotlin (.kt)
 - Nim (.nim)
+- D (.d)
+- Go (.go)
 
 
-## Configuration
+## Behind the curtain
 
-Compilation options follows the [official rules](https://atcoder.jp/contests/agc034/rules). For example in case of C++14 (GCC),
+Compilation and execution mostly follows the [official rules](https://atcoder.jp/contests/agc034/rules). For example in case of C++14 (GCC),
 
 ```bash
 g++ -std=gnu++1y -o abc130_a.exe abc130_a.cc
@@ -97,8 +100,8 @@ abc130_a.exe < abc130_a_0.txt   # input file is auto generated
 
 - [ ] Better setup
 - [ ] Command-line options
-  - [ ] Enable using extra libraries like boost
-  - [ ] Choose another compiler / interpreters such as clang, pypy
+  - [ ] Toggle extra libraries like boost
+  - [ ] Select compiler / interpreters like clang, pypy
 - [ ] More languages
 - [ ] Run remotely on "Custom Test" in AtCoder server
 - [ ] Submission?
