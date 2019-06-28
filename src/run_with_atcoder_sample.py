@@ -140,9 +140,9 @@ def prepare_executable(filepath):
     elif ext == ".rs":
         subprocess.run(["rustc", "-O", "-o", p_exe, p_src])
         com = [p_exe]
-    # F#
+    # F# mono
     elif ext in (".fs", ".fsx"):
-        subprocess.run(["fsharpc", "--nologo", "-o", p_exe, p_src])
+        subprocess.run(["fsharpc", "--nologo", p_src])
         com = ["mono", p_exe]
     # Haskell
     elif ext == ".hs":
@@ -168,7 +168,7 @@ def prepare_executable(filepath):
         subprocess.run(["nim", "c", "-d:release", "-o:" + p_exe, p_src])
         com = [p_exe]
     else:
-        sys.exit("I can take only .py, .cc, .fs, .hs, .kt")
+        sys.exit("Can take .cc .py .fs, .hs .kt .nim .go .d only")
 
     return com
 
@@ -180,25 +180,25 @@ def run_code(cmd, inp):
     return out
 
 
-def compare(inputs, outputs, groundtruth):
+def compare(sample_inputs, sample_output, prog_outputs):
     """
-    inputs   [str]
-    outputs  [str]
-    groundtruth [str]
+    sample_inputs  [str]
+    sample_output  [str]
+    prog_outputs   [str]
     """
-    assert len(inputs) == len(outputs) == len(groundtruth), "Mismatching size!"
+    assert len(sample_inputs) == len(prog_outputs) == len(sample_output), "Mismatching size!"
 
-    for i, (inp, user_out, samp_out) in enumerate(zip(inputs, outputs, groundtruth)):
+    for i, (inp, prog_out, samp_out) in enumerate(zip(sample_inputs, prog_outputs, sample_output)):
         print(blue("Case {}".format(i + 1)) + ": ", end="")
         samp_out = samp_out.strip()
-        user_out = user_out.strip()
-        if samp_out == user_out:
+        prog_out = prog_out.strip()
+        if samp_out == prog_out:
             print(green("ok"))
         else:
             print(red("============ Mismatch ============"))
             print("Sample Input : ", inp)
             print("Sample Output: ", samp_out)
-            print("Your Answer  : ", orange(user_out))
+            print("Your Answer  : ", orange(prog_out))
 
 
 def main():
@@ -249,7 +249,7 @@ def main():
     prog_outputs = [run_code(cmd, inp) for inp in sample_inputs]
 
     logging.debug("program outputs: {}".format(prog_outputs))
-    compare(sample_inputs, prog_outputs, sample_outputs)
+    compare(sample_inputs, sample_outputs, prog_outputs)
 
 
 if __name__ == "__main__":
