@@ -18,6 +18,7 @@ import json
 import logging
 import re
 import inspect
+import time
 
 pp = os.path.abspath(os.path.dirname(inspect.getsourcefile(lambda: 0)))
 sys.path.append(pp)
@@ -128,6 +129,7 @@ def prepare_executable(filepath):
     base, ext = filepath.stem, filepath.suffix
     exe_ext = ".exe"
     p_exe = (filepath.parent / (base + exe_ext)).as_posix()
+    t0 = time.time()
 
     # C++
     if ext in (".cc", ".cp", ".cpp", ".c++", ".cxx"):
@@ -170,6 +172,8 @@ def prepare_executable(filepath):
     else:
         sys.exit("Can take .cc .py .fs, .hs .kt .nim .go .d only")
 
+    t1 = time.time()
+    logging.debug("compile   : {:.3f} sec".format(t1 - t0))
     return com
 
 
@@ -209,8 +213,6 @@ def main():
     4. Run Python code with the sample input, and compare its outcome with the
     sample output.
     """
-    logging.basicConfig(level=logging.DEBUG)
-
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="input source code path")
     parser.add_argument(
@@ -218,7 +220,16 @@ def main():
         help="No login to AtCoder (works for problems after a contest)",
         action="store_true",
     )
+    parser.add_argument(
+        "--debug",
+        help="Show debug messages",
+        action="store_true",
+    )    
     args = parser.parse_args()
+    if (args.debug):
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     p = pathlib.Path(args.input)
     if_login = not args.nologin

@@ -9,6 +9,7 @@ import json
 import sys
 import itertools as it
 import logging
+import time
 
 import bs4
 import requests
@@ -162,7 +163,9 @@ def extract_samples(problem_str, if_login=False):
     check_sanity(problem_str)
     uri = geturi(problem_str, ATCODER_PROBLEM_URL)
 
+    t0 = time.time()
     rawhtml = _fetch_urlcontent(uri, if_login)
+    t1 = time.time()
     soup = bs4.BeautifulSoup(rawhtml, features="html.parser")
     input_sample_anckers = [x for x in soup.find_all("h3") if "Sample Input" in x.text]
     inputs = [x.next.next.text.splitlines() for x in input_sample_anckers]
@@ -173,11 +176,13 @@ def extract_samples(problem_str, if_login=False):
 
     input_output_pairs = list(zip(inputs, outputs))
     result = {"id": problem_str, "url": uri, "sample_io_pairs": input_output_pairs}
+
+    logging.debug("html fetch: {:.3f} sec".format(t1 - t0))
     return json.dumps(result, indent=2)  # indent for pretty printing
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "prob_id", help="Problem ID as in the AtCoder's URI (such as 'abc130_a')"
