@@ -7,17 +7,15 @@ Run your answer to AtCoder problems with sample cases **without copy-pasting**! 
 
 - Python 3.x
 - [Beautiful Soup 4](<http://www.crummy.com/software/BeautifulSoup/>)
+- [requests](https://2.python-requests.org/en/master/)
 - [keyring](https://github.com/jaraco/keyring)
 
 
 ## Setup
 
 ```bash
-# [Optional] Activate conda environment
-conda activate env
-
-# Install beautifulsoup4 with conda or pip
-conda install beautifulsoup4
+# [OPTIONAL] Create & activate conda environment with required packages
+conda create -n atcoder -y beautifulsoup4 requests keyring; conda activate atcoder
 
 # Clone this repository
 git clone https://github.com/yamaton/atcoder-scrape-and-local-test.git
