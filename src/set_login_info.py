@@ -8,5 +8,5 @@ if __name__ == "__main__":
     username = input()
     print("Enter AtCoder password: ", end="")
     password = input()
-    keyring.set_password(ATCODER_SERVICE, username, ATCODER_SERVICE)
+    keyring.set_password(ATCODER_SERVICE, ATCODER_SERVICE, username)
     keyring.set_password(ATCODER_SERVICE, username, password)
