@@ -1,4 +1,9 @@
-import keyring
+import sys
+try:
+    import keyring
+except ModuleNotFoundError:
+    print("keyring not found; install keyring via conda or pip.")
+    sys.exit()
 
 ATCODER_SERVICE = "atcoder-sample-test"
 
