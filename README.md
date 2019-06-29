@@ -1,5 +1,7 @@
 # AtCoder Sample Cases Tester
 
+**[WARNING]** This code does not work during an AtCoder conest. I'm working on it!
+ 
 Run your answer to AtCoder problems with sample cases **without copy-pasting**! This script scrapes sample inputs/outputs, and then run your code with the sample cases.
 
 
