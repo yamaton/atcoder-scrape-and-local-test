@@ -220,13 +220,11 @@ def main():
         help="No login to AtCoder (works for problems after a contest)",
         action="store_true",
     )
-    parser.add_argument(
-        "--debug",
-        help="Show debug messages",
-        action="store_true",
-    )    
+    parser.add_argument("--debug", help="Show debug messages", action="store_true")
+    parser.add_argument("--problem-id", help="Problem ID")
+
     args = parser.parse_args()
-    if (args.debug):
+    if args.debug:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=logging.INFO)
@@ -237,8 +235,11 @@ def main():
 
     assert p.exists(), "File not found: {}".format(args.input)
     filename = p.name
-    problem_id = extract_id(p)
-    assert problem_id, "Failed to deduce problem ID"
+    if args.problem_id:
+        problem_id = args.problem_id
+    else:
+        problem_id = extract_id(p)
+        assert problem_id, "Failed to deduce problem ID"
     print("\nAtCoder {}: {}".format(bold(problem_id), bold(filename)))
 
     json_str = extract_samples(problem_id, if_login)
